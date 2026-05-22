@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oliver Wright — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="nav-logo" href="#">OW/portfolio</a>
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#projects">projects</a></li>
+      <!-- <li><a href="#contact">contact</a></li> -->
+    </ul>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="container">
+    <p class="hero-label">portfolio</p>
+    <h1>Oliver <strong>Wright</strong></h1>
+    <p class="hero-sub">Email: oliverw1000@gmail.com</p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-primary">View projects</a>
+      <!-- <a href="mailto:oliverw1000@gmail.com" class="btn btn-outline">Get in touch</a> -->
+      <a href="https://github.com/Revlo1" target="_blank" class="btn btn-outline">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <h2>About me</h2>
+    <p style="color: var(--text-muted);">
+      Hi, I'm <strong style="color: var(--text); font-weight: 500;">Oliver Wright</strong>, a 4th-year Ethical Hacking student at <strong style="color: var(--text); font-weight: 500;">Abertay University</strong>.
+      My degree has helped me build a strong foundation in cybersecurity, along with a variety of other computing and software development skills.
+      I've been passionate about computing-related projects my whole life, even before it was offered in school.
+    </p>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container">
+    <h2>Skills & Programming Languages</h2>   
+    <div>
+      <p style="color: var(--text-muted);">
+        The projects within this portfolio demonstrate a variety of cybersecurity and general computing skills. I have experience in penetration testing across networks,
+        web applications, and IoT devices, alongside digital forensics and malware analysis. I am familiar with industry tools including Wireshark, Volatility, and Metasploit. 
+        Additionally, I am comfortable working with a range of languages with some experience in cloud platforms and database management.
+      </p>
+    </div>
+    <div class="skills-grid">
+      <span class="skill-tag">C++</span>
+      <span class="skill-tag">Python</span>
+      <span class="skill-tag">HTML5</span>
+      <span class="skill-tag">CSS</span>
+      <span class="skill-tag">JavaScript</span>
+      <span class="skill-tag">PHP</span>
+      <span class="skill-tag">Java</span>
+      <span class="skill-tag">SQL</span>
+      <span class="skill-tag">Lua</span>
+      <span class="skill-tag">Kotlin</span>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <h2>University Projects</h2>
+    
+    <div class="year-group">
+      <p class="year-heading">4th year</p>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Dissertation: Evaluating the Feasibility of Firmware Emulation for IoT Penetration Testing and Security Analysis</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/DissertationFinal.pdf" target="_blank">Paper</a>
+            <a class="project-link" href="Papers/DissPosterFinal.pdf" target="_blank">Poster</a>
+          </div>
+        </div>
+        <p class="project-desc">This is my final year honours project dissertation. The project evaluates the research field of using firmware emulation for IoT penetration testing.</p>
+        <div class="project-tags">
+          <span class="project-tag">QEMU</span>
+          <span class="project-tag">FirmAE</span>
+          <span class="project-tag">EMBA</span>
+          <span class="project-tag">Binwalk</span>
+          <span class="project-tag">Architecture Identification</span>
+          <span class="project-tag">Vulernerbilty Replication</span>
+        </div>
+      </div>
+    <!---->
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Engineering Resilient Systems — Software Security</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/SysEng1Software.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">A series of papers providing security recommendations to a fictitious company based on their specific requirements and current situation.</p>
+        <div class="project-tags">
+          <span class="project-tag">SQL injection</span>
+          <span class="project-tag">PostgreSQL</span>
+          <span class="project-tag">Secure software development</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Engineering Resilient Systems — Machine Learning IDS</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/SysEng2ML.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">machine learning</span>
+          <span class="project-tag">IDS</span>
+          <span class="project-tag">random forest</span>
+          <span class="project-tag">SVM</span>
+          <span class="project-tag">Model training</span>
+          <span class="project-tag">Evaluation metrics</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Engineering Resilient Systems — Human-Centred Security</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/SysEng3HumanCentred.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="project-tag">phishing</span>
+          <span class="project-tag">social engineering</span>
+          <span class="project-tag">employee training</span>
+          <span class="project-tag">Authentication</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">IoT Secure Software Development — Minecraft IDS</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/IoT%20Paper.pdf" target="_blank">Paper</a>
+            <a class="project-link" href="Papers/IoTMiniPoster.pdf" target="_blank">Poster</a>
+          </div>
+        </div>
+        <p class="project-desc">An IoT intrusion detection system device monitoring a virtual Minecraft environment, using secure IoT, cloud, and software development techniques. The project makes use of the ComputerCraft mod to allow functional computer systems capable of communicating with external devices.</p>
+        <div class="project-tags">
+          <span class="project-tag">IDS</span>
+          <span class="project-tag">ComputerCraft</span>
+          <span class="project-tag">Raspberry Pi</span>
+          <span class="project-tag">Python / C / SQL</span>
+          <span class="project-tag">DynamoDB</span>
+          <span class="project-tag">AWS</span>
+          <span class="project-tag">API keys</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Digital Forensics — Malware Investigation</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/ForensicsPaperMalware.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">A digital forensics investigation of the aftermath of a simulated malware infection on the university. Evidence artifacts across 3 machines, including browser history, event logs, memory dumps, network config files, prefetch files, registry dumps, a network capture, and firewall logs.</p>
+        <div class="project-tags">
+          <span class="project-tag">Wireshark</span>
+          <span class="project-tag">MemProcFS</span>
+          <span class="project-tag">RegistryExplorer</span>
+          <span class="project-tag">C2 Infrastructure</span>
+          <span class="project-tag">SnakeKeyLogger</span>
+          <span class="project-tag">Fileless malware</span>
+          <span class="project-tag">Process spoofing</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Digital Forensics — Memory Dump Focus</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/ForensicReportMemDump.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">A memory dump focused digital forensics investigation to answer a checklist of questions.</p>
+        <div class="project-tags">
+          <span class="project-tag">Volatility</span>
+          <span class="project-tag">MemProcFS</span>
+          <span class="project-tag">Forensic Protocol</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="year-group">
+      <p class="year-heading">3rd year</p>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Password Manager</span>
+          <div class="project-links">
+            <a class="project-link" href="https://github.com/Revlo1/PassecPasswordManager" target="_blank">Code</a>
+            <a class="project-link" href="Papers/PassecManagerPaper%20Final.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">A secure password manager built with Python and MongoDB with integrated security checks.</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">MongoDB</span>
+          <span class="project-tag">Hashing &amp; salting</span>
+          <span class="project-tag">email verification</span>
+          <span class="project-tag">breach checking</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">WannaCry Malware Analysis</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/Malware%20Whitepaper%20Finished.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">A full malware analysis of a sample discovered to be the well-known ransomware "WannaCry".</p>
+        <div class="project-tags">
+          <span class="project-tag">static analysis</span>
+          <span class="project-tag">dynamic analysis</span>
+          <span class="project-tag">code analysis</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Networking Penetration Test</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/Networking%20Report.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">Blindly mapping out a network using network scans and exploiting vulnerabilities.</p>
+        <div class="project-tags">
+          <span class="project-tag">network scanning</span>
+          <span class="project-tag">exploitation</span>
+          <span class="project-tag">subnet calculations</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Penetration Testing an IoT Smart Thermostat</span>
+        </div>
+        <p class="project-desc">Due to the nature of this project containing sensitive information about a real product, the work involved cannot be shown. However, it was still a big step in my academic journey as I learned how to work in a professional environment with an external client.</p>
+        <div class="project-tags">
+          <span class="project-tag">IoT</span>
+          <span class="project-tag">hardware security</span>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="year-group">
+      <p class="year-heading">2nd year</p>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Penetration Testing a Network</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/Pen%20testing%20White%20Paper%20Template1.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">Carrying out a penetration test on a network and then documenting the results in an academic paper.</p>
+        <div class="project-tags">
+          <span class="project-tag">vulnerability scanning</span>
+          <span class="project-tag">enumeration</span>
+          <span class="project-tag">system hacking</span>
+          <span class="project-tag">countermeasures</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Digital Forensics Investigation (Group Work)</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/The%20Badgers%20Report%20Finished.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">Performing a digital forensics investigation on a hard drive to gather potential evidence for a hypothetical court case.</p>
+        <div class="project-tags">
+          <span class="project-tag">disk imaging</span>
+          <span class="project-tag">password cracking</span>
+          <span class="project-tag">logical searching</span>
+          <span class="project-tag">network searching</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Penetration Testing a Web Application</span>
+          <div class="project-links">
+            <a class="project-link" href="Papers/Web%20App%20Testing%20Paper.pdf" target="_blank">Paper</a>
+          </div>
+        </div>
+        <p class="project-desc">Carrying out a penetration test on a web application and then documenting the results in an academic paper.</p>
+        <div class="project-tags">
+          <span class="project-tag">OWASP</span>
+          <span class="project-tag">auth testing</span>
+          <span class="project-tag">session management</span>
+          <span class="project-tag">input validation</span>
+          <span class="project-tag">cryptography</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Secure Web Development</span>
+          <div class="project-links">
+            <a class="project-link" href="https://github.com/Revlo1/WebApplication" target="_blank">Code</a>
+          </div>
+        </div>
+        <p class="project-desc">A securely developed web application making use of HTML, PHP, JavaScript and CSS.</p>
+        <div class="project-tags">
+          <span class="project-tag">PHP</span>
+          <span class="project-tag">authentication</span>
+          <span class="project-tag">hashing</span>
+          <span class="project-tag">Bootstrap</span>
+          <span class="project-tag">jQuery</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Particles Simulator</span>
+          <div class="project-links">
+            <a class="project-link" href="https://github.com/Revlo1/Particles" target="_blank">Code</a>
+          </div>
+        </div>
+        <p class="project-desc">A terminal-based visual simulation program of particles bouncing around in a container, created in C++ deploying CPU parallelisation.</p>
+        <div class="project-tags">
+          <span class="project-tag">C++</span>
+          <span class="project-tag">CPU parallelisation</span>
+          <span class="project-tag">mutexes</span>
+          <span class="project-tag">threads</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Matrix Multiplication</span>
+          <div class="project-links">
+            <a class="project-link" href="https://github.com/Revlo1/matrixMultiplication" target="_blank">Code</a>
+          </div>
+        </div>
+        <p class="project-desc">A program that performs matrix multiplication in a variety of different ways coded in C++ deploying GPU parallelisation.</p>
+        <div class="project-tags">
+          <span class="project-tag">C++</span>
+          <span class="project-tag">GPU parallelisation</span>
+          <span class="project-tag">tiled multiplication</span>
+          <span class="project-tag">USM</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Data Structures and Algorithms</span>
+          <div class="project-links">
+            <a class="project-link" href="https://github.com/Revlo1/DSA" target="_blank">Code</a>
+          </div>
+        </div>
+        <p class="project-desc">A collection of different software engineering data structures and algorithms to be used in future projects ensuring efficient and well-structured code.</p>
+        <div class="project-tags">
+          <span class="project-tag">C++</span>
+          <span class="project-tag">heaps</span>
+          <span class="project-tag">linked lists</span>
+          <span class="project-tag">sorting</span>
+          <span class="project-tag">stacks &amp; queues</span>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="year-group">
+      <p class="year-heading">1st year</p>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Cyber Pet</span>
+          <div class="project-links">
+            <a class="project-link" href="https://github.com/Revlo1/CyberPet" target="_blank">Code</a>
+          </div>
+        </div>
+        <p class="project-desc">A terminal-based virtual pet game programmed in C++.</p>
+        <div class="project-tags">
+          <span class="project-tag">C++</span>
+          <span class="project-tag">modular</span>
+          <span class="project-tag">pointers</span>
+        </div>
+      </div>
+    </div>
+    <!---->
+  </div>
+</section>
+</body>
+</html>
