@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THM Recruit Writeup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="nav-logo" href="../index.html">OW://</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">portfolio</a></li>
+      <li><a href="../writeups.html">writeups</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="writeup-page">
+  <div class="container">
+
+    <a class="writeup-back" href="../writeups.html">← back</a>
+
+    <span class="writeup-date">September 2026</span>
+    <h1>TryHackMe <strong>Recruit</strong></h1>
+    <div class="project-tags" style="margin-top: 12px;">
+      <span class="project-tag">Web Application</span>
+      <span class="project-tag">Database</span>
+      <span class="project-tag">Local File Inclusion</span>
+      <span class="project-tag">SQL Injection</span>
+    </div>
+
+    <div class="writeup-body">
+
+      <h2>Objectives</h2>
+
+      <p>There are 2 objectives for this room: 
+        
+        <ol>
+          <li>What is the flag value after logging in as a normal user?</li>
+          <li>What is the flag value after logging in as admin?</li>
+        </ol>
+      </p>
+
+      <h2>Solution</h2>      
+      <p>To begin, I pinged the target machines IP address <10.81.146.112> and performed an Nmap scan. I also added domain into /etc/hosts as "recruit.thm"</p>
+
+      <img src="images/thm-recruit-nmap.png" alt="Nmap scan results" />
+      <pre><code>nmap -sC -sV -p- 10.81.146.112</code></pre>
+      <p>Flags breakdown:</p>
+      <ol>
+        <li>-sC runs a default script scan</li>
+        <li>-sV performs version detection</li>
+        <li>-p- scans all ports (1-65535) instead of the default top 1000 common ports</li>    
+      </ol>
+
+      <p>
+        <br>
+        The machine had 3 open ports: <i>SSH:22, Domain ISC Bind:53, and HTTP:80</i>. 
+        The primary point of interest was the HTTP service, therefore, the next step was to explore the web application and look for potential vulnerabilities.<br><br>
+        A browser was launched through Burp Suite as I expected burp may come in useful in the near future. Upon visiting the web application,
+        I was met with a login page and very limited exploration options.<br><br> The only other option was a "access API" button. This button provided
+        basic information about the web applications API answering the following questions: "What is the API used for?", "How can I fetch a candidate CV using the API?", 
+        "What kind of URLs are supported?", and "Are there any security restrictions?".
+      </p>
+
+      <img src="images/thm-recruit-initial-web-viewing.png" alt="Initial web viewing" />
+      <img src="images/thm-recruit-api-questions.png" alt="API questions" />
+
+      <p>
+        To summarise the answers to these questions, The API is used to internally fetch and process candidate CVs from external sources. 
+        [/file.php?cv=] endpoint is used to fetch these CVs. The API supports fetching CVs from both HTTP and HTTTPS URLs.
+        And finally, the API can block requests targeting restricted locations. <br><br>
+
+        I messed around with the API endpoint for a little bit, trying to fetch internal files from the web server, but I was unsuccessful and this point and moved on.
+        <br><br>
+        I run a gobuster scan to enumerate the web application directories and files.
+      </p>
+
+      <pre><code>gobuster dir -u http://10.81.146.112 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</code></pre>
+      
+      <img src="images/thm-recruit-gobuster.png" alt="Gobuster results" />
+
+      <p>
+        The three directories of note were "/mail", "/phpmyadmin", and "/server-status" - however, this final one has a 403 status code meaning its likely where you are taken after authentication. <br><br>
+        I began looking at the phpmyadmin page to test for default/predictable credentials. This fell short so I moved onto "/mail". In this directory I found a file "mail.log" which leaked sensitive data.
+        In this file an account's username "hr" was provided, and the password was stated to be contained within a file name "config.php".
+        Additionally, the file stated admin credentials were securely stored in a backend database.
+      </p>
+
+      <img src="images/thm-recruit-mail-log.png" alt="Mail log file" />
+
+      <p>Using Burp Suite, I edited a GET request using the API endpoint to attempt to fetch the config.php file through an Local File Inclusion(LFI) vulnerability. The first attempt was unsuccessful, I tested to see the file was in a previous directory using "../"</p>
+
+      <pre><code>GET /file.php?cv=/config.php HTTP/1.1<br>GET /file.php?cv=../config.php HTTP/1.1<br>GET /file.php?cv=../../config.php HTTP/1.1 <br>etc</code></pre>
+
+      <p>
+        Each attempt was met with "Only local files are allowed". I figured at this point that the API may have some basic restrictions in place preventing absolute paths (/) or path traversal attacks (../).
+        I decided to try bypass these restrictions using PHP wrappers. The first wrapper I used was "file://", which successfully fetched the file.
+      </p>
+
+      <pre><code>GET /file.php?cv=file://config.php HTTP/1.1</code></pre>
+      <img src="images/thm-recruit-burpsuite-request.png" alt="Burp Suite Request" />
+
+      <p>From here I grabbed the hr account password "hrpassword123" and authenticated on the web application login page.</p>
+
+      <img src="images/thm-recruit-dashboard-php.png" alt="Dashboard" />
+
+      <p>And just like that, we have completed our first objective of acquiring the normal user flag</p>
+
+      <pre><code>THM{LOGGED_IN_USER}</code></pre>
+
+      <p>
+        However, we're not done yet. The first thing I noticed about this dashboard was its search feature. I noticed that whenever a search was conducted it was appended to the URL.
+        I entered a single quote character and hit enter, and I was met with a SQL error. This is a clear indication that SQL injection is likely possible.
+        As a proof of concept, I entered a SQL injection payload which returned all of the initially available information without an error. 
+        The results being returned are candidate CVs, but the admin credentials will be stored in a different database/table entirely.
+        Due to this, I used sqlmap to enumerate the database, which begun with me capturing a request in Burp Suite and saving it as a txt file.        
+      </p>
+
+      <img src="images/thm-recruit-single-quote-error.png" alt="Single quote error" />
+      <img src="images/thm-recruit-sql-injection.png" alt="SQL Injection" />
+      <img src="images/thm-recruit-burp-capture-to-txt.png" alt="Burp Suite Capture to TXT" />
+
+      <p>
+        I then ran sqlmap with the following command, which enumerated the available databases.
+      </p>
+      <pre><code>sqlmap -r recruit_lab_request.txt -p search --dbs</code></pre>
+      <p>This uncovered 6 databases, with the interesting one being "recruit_db".</p>
+
+      <img src="images/thm-recruit-sqlmap-databases.png" alt="SQLMap Databases" />
+
+      <p>Next, I targeted the "recruit_db" database to enumerate its tables using the following command:</p>
+
+      <pre><code>sqlmap -r recruit_lab_request.txt -D recruit_db --tables</code></pre>
+      <p>This uncovered 2 tables: "users" and "candidates", with the "users" table being my target.</p>
+      <img src="images/thm-recruit-sqlmap-tables.png" alt="SQLMap Tables" />
+
+      <p>Now that the exact database and table of interest has been identified, I dropped its contents to extract the admin credentials.</p>
+      <pre><code>sqlmap -r recruit_lab_request.txt -D recruit_db -T users --dump</code></pre>
+      <img src="images/thm-recruit-sqlmap-dump.png" alt="SQLMap Dump" />
+
+      <p>Success! The admin credentials have been extracted and used to log into the web application: </p>
+      <pre><code>admin:admin@001admin</code></pre>
+      <img src="images/thm-recruit-admin-login.png" alt="Admin Login" />
+
+      <p>After logging in as admin, the admin flag was found, concluding this challenge:</p>
+      <pre><code>THM{LOGGED_IN_ADM1N1}</code></pre>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+
+  document.querySelectorAll('.writeup-body img').forEach(img => {
+    img.addEventListener('click', () => {
+      lbImg.src = img.src;
+      lightbox.classList.add('open');
+    });
+  });
+
+  lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+</script>
+</body>
+</html>

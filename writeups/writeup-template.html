@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Writeup Title</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="nav-logo" href="../index.html">OW://</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">portfolio</a></li>
+      <li><a href="../writeups.html">writeups</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="writeup-page">
+  <div class="container">
+
+    <a class="writeup-back" href="../writeups.html">← back</a>
+
+    <span class="writeup-date">Month Year</span>
+    <h1>Your <strong>Title</strong></h1>
+    <div class="project-tags" style="margin-top: 12px;">
+      <span class="project-tag">tag</span>
+    </div>
+
+    <div class="writeup-body">
+
+      <h2>Section heading</h2>
+
+      <p>Body text.</p>
+
+      <img src="../images/filename.png" alt="description" />
+
+      <pre><code>command or code</code></pre>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+
+  document.querySelectorAll('.writeup-body img').forEach(img => {
+    img.addEventListener('click', () => {
+      lbImg.src = img.src;
+      lightbox.classList.add('open');
+    });
+  });
+
+  lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+</script>
+</body>
+</html>
