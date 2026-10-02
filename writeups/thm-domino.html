@@ -27,7 +27,7 @@
 
     <span class="writeup-date">September 2026</span>
     <h1>TryHackMe <strong>Domino</strong></h1>
-    <div class="project-tags" style="margin-top: 12px;"> <!-- TO DO HERE --><!-- TO DO HERE --><!-- TO DO HERE -->
+    <div class="project-tags" style="margin-top: 12px;">
       <span class="project-tag">Information Disclosure</span>
       <span class="project-tag">Cryptography</span>
       <span class="project-tag">Brute Forcing</span>
@@ -116,7 +116,8 @@
 
       <p>
         Now its time to put this theory into practice. I began by logging in and ensured I had a valid nexus_session cookie. I then visited the /api/auth/token.php endpoint where I was provided with a JWT token.
-        I copy and pasted this into the JWT debugger web tool. However, the tool failed to decode the token, which I fixed by removing the final section of the token. I am not entirely sure what that last section is.
+        I copy and pasted this into the JWT debugger web tool. However, the tool failed to decode the token, which I fixed by removing the final section of the token (the signature). 
+        Initially, I wasn't sure why this worked, but I later found the auth.php file which revealed that the server had the signature verification section of code fully commented out. This is also why I was able to get away with setting the algorithm to none.
         Now that I had successfully decoded the token, I changed the algorithm to none, and changed the payload to match the website's format, but with the role set to admin.
         When using this new token with the authenticated '/api/files.php?name=' API endpoint, I was able to fetch the /var/www/html/config.php file, which I previously could not access.
       </p>
@@ -177,6 +178,9 @@
         From this I realised the funny reality that I could have simply SSH'd into the machine as devops from very early on into the lab. From here I was able to get flags 3 and 4, 3 being in /opt/flag3.txt and 4 being in /home/devops/user.txt.
       </p>
 
+      <img src="images/domino/sudevops.png" alt="su to devops" />
+      <img src="images/domino/flag3and4.png" alt="flag 3 and 4" />
+
       <pre><code>THM{rf1_2_rc3_f00th0ld_fl4g3}</code></pre>
       <pre><code>THM{s5h_cr3d_r3u53_l4t3r4l_fl4g4}</code></pre>
 
@@ -187,14 +191,20 @@
 
       <pre><code>find / -perm -4000 -type f 2>/dev/null</code></pre>
 
+      <img src="images/domino/suid.png" alt="SUID files" />
+
       <p>
         This command lists all files that have the SUID bit set, meaning they run with the privileges of their owner. This means that I can look for files that belong to root and potentially run commands through it.
         However, I did not find any files that were of interest. I looked back through the directories, and in the devops file I found a python script 'admin_bot.py' which belonged to root.
-        Additionally, in the same location I found /monitoring and /tools which also both belonged to root. I tried editing the python script to to copy the /bin/bash binary, allowing me to run root commands through it.
-        However, I noticed that root never reran this script, and when I tried to restart it, it started running as devops, meaning it would not give me root privileges.
+        Additionally, in the same location I found /monitoring and /tools which also both belonged to root. I accidentally, quit out of the shell here so I quickly SSH'd back in as devops to continue. 
+        I tried editing the python script to to copy the /bin/bash binary, allowing me to run root commands through it.
+        However, root never reran this script, and when I tried to restart it, it started running as devops, meaning it would not give me root privileges.
         In a real scenario, I could have killed the process and waited for the root user to restart it, hoping that they would not notice the changes made to the script. However, that isn't how CTFs work.
       </p>
 
+      <img src="images/domino/adminbot.png" alt="admin_bot.py" />
+      <img src ="images/domino/scriptinjection.png" alt="Script injection" />
+      <img src="images/domino/psaux.png" alt="ps aux" />
 
       <p>
         I decided to look into the /monitoring directory, and found a script called 'health_report.sh' which belonged to the user root, but the group was devops. Both the user and group had the same file permissions which allowed read, write, and execute.
@@ -202,8 +212,17 @@
         After a short amount of time, the script was executed and I received a connection on my netcat listener, this time as root. From here I was able to read the root flag:
       </p>
 
+      <img src="images/domino/lslamonitoring.png" alt="ls -la /monitoring" />
+      <img src="images/domino/netcatlistener.png" alt="Netcat listener" />
+      <img src="images/domino/pentestmonkeyreverseshell.png" alt="Pentest Monkey reverse shell" />
+      <img src="images/domino/reverseconnectionroot.png" alt="Reverse shell connection as root" />
+
       <pre><code>THM{pr1v3sc_cr0n_r00t_fl4g5}</code></pre>
 
+      <p>
+        This room contained a lot of different vulnerabilities, and was a great learning/practicing experience. I learned a lot about JWTs specifically, and how they can be forged when incorrectly implemented.
+        The most obvious issue with this specific implementation was that the signature verification was fully commented out, and the removal of the signature section of the token was what allowed me to decode it.
+      </p>
 
 
     </div>
