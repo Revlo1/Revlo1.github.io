@@ -87,6 +87,11 @@
         This is an indication of an IDOR vulnerability, as I can change the id parameter to any other user ID and view their profile. I changed the id parameter to 1, which is the admin user, and found the flag:
       </p>
 
+      <img src="images/domino/userstxt.png" alt="Usernames for hydra attack" />
+      <img src="images/domino/dashboard.png" alt="Dashboard page" />
+      <img src="images/domino/profile.png" alt="Robert's profile page" />
+      <img src="images/domino/adminprofile.png" alt="Admin's profile page" />
+
       <pre><code>THM{1d0r_h0r1z0nt4l_4cc3ss_fl4g1}</code></pre>
 
       <p>When exploring further, I noticed the option to create a support ticket. This posts the ticket directly onto the support page. I revisit this later.</p>
@@ -129,14 +134,13 @@
       
 
       <p>
-        I opened Cyber Chef to convert the encryption key to hex.
+        I opened Cyber Chef to convert the encryption key "N3xusK3y2024!!" to hex.
         Here I saw that the key was currently 28 bits, so I padded it with 4 zeros to make it 32. I then took this key in CyberChef's AES decrypt using ECB mode and IV off.
         This allowed me to decrypt the config.enc file. The output of this did not reveal much useful information other than the fact that there is a system user named devops.
       </p>
 
       <img src="images/domino/key.png" alt="AES key in hex" />  
       <img src="images/domino/cyberchef.png" alt="CyberChef AES decrypt" />
-      <img src="images/domino/configenc.png" alt="config.enc decrypted" />
 
 
        <p>
@@ -157,14 +161,18 @@
         In my browser, I replaced my current nexus_session cookie with the one I just received and refreshed the page. I was now logged in as laura.hayes, the admin user.
         An admin panel was now available to me, I navigated to it and found the flag:
       </p>
-
+      
       <pre><code>THM{bl1nd_x55_s3ss10n_h1j4ck_fl4g2}</code></pre>
 
+      <img src="images/domino/sessionhijack.png" alt="Cookie forged" />
+      <img src="images/domino/laurahayes.png" alt="Logged in as laura.hayes" />
+      <img src="images/domino/adminpanel.png" alt="Admin panel" />
 
       <p>
         I revisited the authenticated '/api/files.php?name=' API endpoint to see if it could be used to fetch external files. I installed and run penelope for a more advanced webshell.
         Then I locally created a standard bash reverse shell php file and started a HTTP server on my machine. The endpoint was request the reverse shell file. The file is successfully fetched and executed, and I gained access to the system as www-data through penelope.
       </p>
+
 
       <img src="images/domino/penelopestarted.png" alt="Penelope webshell started" />
       <img src="images/domino/reverse.png" alt="Reverse shell" />
@@ -216,6 +224,7 @@
       <img src="images/domino/netcatlistener.png" alt="Netcat listener" />
       <img src="images/domino/pentestmonkeyreverseshell.png" alt="Pentest Monkey reverse shell" />
       <img src="images/domino/reverseconnectionroot.png" alt="Reverse shell connection as root" />
+      <img src="images/domino/rootflag.png" alt="Root flag" />
 
       <pre><code>THM{pr1v3sc_cr0n_r00t_fl4g5}</code></pre>
 
