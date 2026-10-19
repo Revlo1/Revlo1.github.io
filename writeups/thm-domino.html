@@ -59,6 +59,8 @@
       <h2>Solution</h2>
 
 
+      <h2>Enumeration</h2>
+
       <p>
         <br><br>Note: This machine was not done in one sitting, therefore, there are instances of the target machines IP address changing.<br><br>
         I began by peforming a quick Nmap scan with default scripts, version detection, and full port scanning. 
@@ -77,8 +79,12 @@
         This page leaked that the username format was firstname.lastname, which can be deduced from the our team page. This is enough information for a hydra attack.
       </p>
 
-      <img src="images/domino/login.png" alt="Login page" />
-      <img src="images/domino/team.png" alt="Our team page" />
+      <div class="img-row">
+        <img src="images/domino/login.png" alt="Login page" />
+        <img src="images/domino/team.png" alt="Our team page" />
+      </div>
+
+      <h2>Brute Forcing & IDOR</h2>
 
       <p>
         I created a txt file containing all of the known team members names in the format firstname.lastname. I used this to carry out a hydra attack against the web login portal using rockyou.txt as the wordlist.
@@ -87,10 +93,12 @@
         This is an indication of an IDOR vulnerability, as I can change the id parameter to any other user ID and view their profile. I changed the id parameter to 1, which is the admin user, and found the flag:
       </p>
 
-      <img src="images/domino/userstxt.png" alt="Usernames for hydra attack" />
-      <img src="images/domino/dashboard.png" alt="Dashboard page" />
-      <img src="images/domino/profile.png" alt="Robert's profile page" />
-      <img src="images/domino/adminprofile.png" alt="Admin's profile page" />
+      <div class="img-row">
+        <img src="images/domino/userstxt.png" alt="Usernames for hydra attack" />
+        <img src="images/domino/dashboard.png" alt="Dashboard page" />
+        <img src="images/domino/profile.png" alt="Robert's profile page" />
+        <img src="images/domino/adminprofile.png" alt="Admin's profile page" />
+      </div>
 
       <pre><code>THM{1d0r_h0r1z0nt4l_4cc3ss_fl4g1}</code></pre>
 
@@ -100,7 +108,9 @@
         By now, the gubuster scan had concluded. I made use of the "-x php" flag to enumerate for php files, the results can be seen below.
       </p>
 
-      <img src="images/domino/gobuster.png" alt="Gobuster scan results" />
+      <img class="img-fill" src="images/domino/gobuster.png" alt="Gobuster scan results" />
+
+      <h2>Information Disclosure</h2>
 
       <p>
         Various directories were found, some interesting ones being /admin, /api, /backup, /support, /server-status, and /static.
@@ -116,8 +126,10 @@
         This means that if I can forge an admin session cookie, then the server will fetch an admin JWT token for me, which will allow me escalated privileges on the web application.
       </p>
 
-      <img src="images/domino/static.png" alt="Static directory" />
-      <img src="images/domino/appjs.png" alt="app.js source code" />
+      <div class="img-row">
+        <img src="images/domino/static.png" alt="Static directory" />
+        <img src="images/domino/appjs.png" alt="app.js source code" />
+      </div>
 
       <p>
         Now its time to put this theory into practice. I began by logging in and ensured I had a valid nexus_session cookie. I then visited the /api/auth/token.php endpoint where I was provided with a JWT token.
@@ -127,11 +139,12 @@
         When using this new token with the authenticated '/api/files.php?name=' API endpoint, I was able to fetch the /var/www/html/config.php file, which I previously could not access.
       </p>
       
-      <img src="images/domino/tokenphp.png" alt="token.php" />
-      <img src="images/domino/jwt.png" alt="JWT debugger" />
-      <img src="images/domino/token.png" alt="JWT token" />
-      <img src="images/domino/configphp.png" alt="config.php source code" />
-      
+      <div class="img-row">
+        <img src="images/domino/tokenphp.png" alt="token.php" />
+        <img src="images/domino/jwt.png" alt="JWT debugger" />
+        <img src="images/domino/token.png" alt="JWT token" />
+        <img src="images/domino/configphp.png" alt="config.php source code" />
+      </div>
 
       <p>
         I opened Cyber Chef to convert the encryption key "N3xusK3y2024!!" to hex.
@@ -139,21 +152,27 @@
         This allowed me to decrypt the config.enc file. The output of this did not reveal much useful information other than the fact that there is a system user named devops.
       </p>
 
-      <img src="images/domino/key.png" alt="AES key in hex" />  
-      <img src="images/domino/cyberchef.png" alt="CyberChef AES decrypt" />
+      <div class="img-row">
+        <img src="images/domino/key.png" alt="AES key in hex" />
+        <img src="images/domino/cyberchef.png" alt="CyberChef AES decrypt" />
+      </div>
 
 
-       <p>
+      <h2>XSS & Session Hijacking</h2>
+
+      <p>
           I decided to revisit the support page where I had previously theorised that XXS could be possible. This could be used to steal the admin's session cookie, potentially giving me access to the admin account.
           Netcat was started listening on port 8080. I created a support ticket with a basic payload to steal the cookie of whoever views the ticket and waited for it to be reviewed.
           After a short amount of time, the ticket was reviewed and I received a connection on my netcat listener with the following nexus_session cookie attached to it.
       </p>
 
-      <img src="images/domino/nc.png" alt="Netcat listener" />
-      <img src="images/domino/xss.png" alt="XSS payload" />
-      <img src="images/domino/ticketpending.png" alt="Support ticket" />
-      <img src="images/domino/ticketreviewed.png" alt="Support ticket reviewed" />
-      <img src="images/domino/cookie.png" alt="Stolen cookie" />
+      <div class="img-row">
+        <img src="images/domino/nc.png" alt="Netcat listener" />
+        <img src="images/domino/xss.png" alt="XSS payload" />
+        <img src="images/domino/ticketpending.png" alt="Support ticket" />
+        <img src="images/domino/ticketreviewed.png" alt="Support ticket reviewed" />
+        <img src="images/domino/cookie.png" alt="Stolen cookie" />
+      </div>
 
       <pre><code>eyJ1c2VyX2lkIjogMSwgInVzZXJuYW1lIjogImxhdXJhLmhheWVzIiwgInJvbGUiOiAiYWRtaW4ifQ==.2d1632df0b5a19cc9a8db3b2e72e612b0110c4e4aaed1265006b8c0bc73f6834</code></pre>
 
@@ -164,9 +183,13 @@
       
       <pre><code>THM{bl1nd_x55_s3ss10n_h1j4ck_fl4g2}</code></pre>
 
-      <img src="images/domino/sessionhijack.png" alt="Cookie forged" />
-      <img src="images/domino/laurahayes.png" alt="Logged in as laura.hayes" />
-      <img src="images/domino/adminpanel.png" alt="Admin panel" />
+      <div class="img-row">
+        <img src="images/domino/sessionhijack.png" alt="Cookie forged" />
+        <img src="images/domino/laurahayes.png" alt="Logged in as laura.hayes" />
+        <img src="images/domino/adminpanel.png" alt="Admin panel" />
+      </div>
+
+      <h2>RFI & RCE</h2>
 
       <p>
         I revisited the authenticated '/api/files.php?name=' API endpoint to see if it could be used to fetch external files. I installed and run penelope for a more advanced webshell.
@@ -174,11 +197,13 @@
       </p>
 
 
-      <img src="images/domino/penelopestarted.png" alt="Penelope webshell started" />
-      <img src="images/domino/reverse.png" alt="Reverse shell" />
-      <img src="images/domino/httpserver.png" alt="HTTP server" />
-      <img src="images/domino/reversefetched.png" alt="Reverse shell fetched" />
-      <img src="images/domino/reverseconnection.png" alt="Reverse shell connection" />
+      <div class="img-row">
+        <img src="images/domino/penelopestarted.png" alt="Penelope webshell started" />
+        <img src="images/domino/reverse.png" alt="Reverse shell" />
+        <img src="images/domino/httpserver.png" alt="HTTP server" />
+        <img src="images/domino/reversefetched.png" alt="Reverse shell fetched" />
+        <img src="images/domino/reverseconnection.png" alt="Reverse shell connection" />
+      </div>
       
       <p>
         I tried to su to the devops user that I knew existed, however, it required a password. I initially tried the passwords I had previously cracked for the web application users, but this did not work.
@@ -191,6 +216,8 @@
 
       <pre><code>THM{rf1_2_rc3_f00th0ld_fl4g3}</code></pre>
       <pre><code>THM{s5h_cr3d_r3u53_l4t3r4l_fl4g4}</code></pre>
+
+      <h2>Privilege Escalation</h2>
 
       <p>
         The final flag was the root flag, which I could not access as devops. Therefore, I begin looking for ways to escalate my privileges. I run ID to check my current group.
@@ -210,9 +237,11 @@
         In a real scenario, I could have killed the process and waited for the root user to restart it, hoping that they would not notice the changes made to the script. However, that isn't how CTFs work.
       </p>
 
-      <img src="images/domino/adminbot.png" alt="admin_bot.py" />
-      <img src ="images/domino/scriptinjection.png" alt="Script injection" />
-      <img src="images/domino/psaux.png" alt="ps aux" />
+      <div class="img-row">
+        <img src="images/domino/adminbot.png" alt="admin_bot.py" />
+        <img src="images/domino/scriptinjection.png" alt="Script injection" />
+        <img src="images/domino/psaux.png" alt="ps aux" />
+      </div>
 
       <p>
         I decided to look into the /monitoring directory, and found a script called 'health_report.sh' which belonged to the user root, but the group was devops. Both the user and group had the same file permissions which allowed read, write, and execute.
@@ -220,11 +249,13 @@
         After a short amount of time, the script was executed and I received a connection on my netcat listener, this time as root. From here I was able to read the root flag:
       </p>
 
-      <img src="images/domino/lslamonitoring.png" alt="ls -la /monitoring" />
-      <img src="images/domino/netcatlistener.png" alt="Netcat listener" />
-      <img src="images/domino/pentestmonkeyreverseshell.png" alt="Pentest Monkey reverse shell" />
-      <img src="images/domino/reverseconnectionroot.png" alt="Reverse shell connection as root" />
-      <img src="images/domino/rootflag.png" alt="Root flag" />
+      <div class="img-row">
+        <img src="images/domino/lslamonitoring.png" alt="ls -la /monitoring" />
+        <img src="images/domino/netcatlistener.png" alt="Netcat listener" />
+        <img src="images/domino/pentestmonkeyreverseshell.png" alt="Pentest Monkey reverse shell" />
+        <img src="images/domino/reverseconnectionroot.png" alt="Reverse shell connection as root" />
+        <img src="images/domino/rootflag.png" alt="Root flag" />
+      </div>
 
       <pre><code>THM{pr1v3sc_cr0n_r00t_fl4g5}</code></pre>
 
@@ -237,6 +268,10 @@
     </div>
 
   </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="" />
 </div>
 
 <script>

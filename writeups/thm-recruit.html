@@ -46,10 +46,10 @@
         </ol>
       </p>
 
-      <h2>Solution</h2>      
+      <h2>Enumeration</h2>      
       <p>To begin, I pinged the target machines IP address <10.81.146.112> and performed an Nmap scan. I also added domain into /etc/hosts as "recruit.thm"</p>
 
-      <img src="images/thm-recruit-nmap.png" alt="Nmap scan results" />
+      <img class="img-fill" src="images/thm-recruit-nmap.png" alt="Nmap scan results" />
       <pre><code>nmap -sC -sV -p- 10.81.146.112</code></pre>
       <p>Flags breakdown:</p>
       <ol>
@@ -68,8 +68,10 @@
         "What kind of URLs are supported?", and "Are there any security restrictions?".
       </p>
       
-      <img src="images/thm-recruit-initial-web-viewing.png" alt="Initial web viewing" />
-      <img src="images/thm-recruit-api-questions.png" alt="API questions" />
+      <div class="img-row">
+        <img src="images/thm-recruit-initial-web-viewing.png" alt="Initial web viewing" />
+        <img src="images/thm-recruit-api-questions.png" alt="API questions" />
+      </div>
 
       <p>
         To summarise the answers to these questions, The API is used to internally fetch and process candidate CVs from external sources. 
@@ -92,7 +94,9 @@
         Additionally, the file stated admin credentials were securely stored in a backend database.
       </p>
 
-      <img src="images/thm-recruit-mail-log.png" alt="Mail log file" />
+      <img class="img-fill" src="images/thm-recruit-mail-log.png" alt="Mail log file" />
+
+      <h2>Local File Inclusion</h2>
 
       <p>Using Burp Suite, I edited a GET request using the API endpoint to attempt to fetch the config.php file through an Local File Inclusion(LFI) vulnerability. The first attempt was unsuccessful, I tested to see the file was in a previous directory using "../"</p>
 
@@ -114,6 +118,8 @@
 
       <pre><code>THM{LOGGED_IN_USER}</code></pre>
 
+      <h2>SQL Injection</h2>
+
       <p>
         However, we're not done yet. The first thing I noticed about this dashboard was its search feature. I noticed that whenever a search was conducted it was appended to the URL.
         I entered a single quote character and hit enter, and I was met with a SQL error. This is a clear indication that SQL injection is likely possible.
@@ -122,9 +128,11 @@
         Due to this, I used sqlmap to enumerate the database, which begun with me capturing a request in Burp Suite and saving it as a txt file.        
       </p>
 
-      <img src="images/thm-recruit-single-quote-error.png" alt="Single quote error" />
-      <img src="images/thm-recruit-sql-injection.png" alt="SQL Injection" />
-      <img src="images/thm-recruit-burp-capture-to-txt.png" alt="Burp Suite Capture to TXT" />
+      <div class="img-row">
+        <img src="images/thm-recruit-single-quote-error.png" alt="Single quote error" />
+        <img src="images/thm-recruit-sql-injection.png" alt="SQL Injection" />
+        <img src="images/thm-recruit-burp-capture-to-txt.png" alt="Burp Suite Capture to TXT" />
+      </div>
 
       <p>
         I then ran sqlmap with the following command, which enumerated the available databases.
@@ -154,6 +162,10 @@
     </div>
 
   </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="" />
 </div>
 
 <script>
